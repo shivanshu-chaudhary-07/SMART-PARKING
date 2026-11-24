@@ -23,7 +23,7 @@ export function VerificationAndReportSection({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'main.c';
+    link.download = PROJECT_METADATA.sourceFilename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -39,7 +39,7 @@ export function VerificationAndReportSection({
             Test Results, Complexity &amp; Documentation
           </h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            All 9 documented test cases pass without warnings or crashes. Click any <strong>Run</strong> button to test that scenario live in the simulator.
+            All {TEST_CASES.length} documented test cases pass without warnings or crashes. Click any <strong>Run</strong> button to test that scenario live in the simulator.
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export function VerificationAndReportSection({
                 Table 6.1: Test Cases
               </h3>
               <span className="font-mono text-xs font-semibold text-emerald-700 tabular-nums">
-                9 / 9 Passed
+                {TEST_CASES.length} / {TEST_CASES.length} Passed
               </span>
             </div>
             <div className="mt-3 overflow-x-auto rounded-xl border border-slate-200">
@@ -101,15 +101,15 @@ export function VerificationAndReportSection({
               Table 6.2: Complexity Analysis
             </h3>
             <p className="mt-1 text-xs text-slate-600">
-              <span className="font-mono text-slate-900">n</span> = parked vehicles, <span className="font-mono text-slate-900">m</span> = waiting vehicles. Total memory: <span className="font-mono font-semibold text-slate-900">O(n + m)</span>.
+              <span className="font-mono text-slate-900">n</span> = parked, <span className="font-mono text-slate-900">m</span> = waiting, <span className="font-mono text-slate-900">MAX</span> = 100. Storage: <span className="font-mono font-semibold text-slate-900">O(MAX × LEN)</span>.
             </p>
             <div className="mt-3 overflow-x-auto rounded-xl border border-slate-200">
               <table className="w-full text-left text-sm">
                 <thead className="bg-slate-100 text-xs font-semibold text-slate-700 border-b border-slate-200">
                   <tr>
-                    <th className="px-3.5 py-2.5">Function</th>
+                    <th className="px-3.5 py-2.5">Operation</th>
                     <th className="px-3 py-2.5">Time</th>
-                    <th className="px-3 py-2.5">Space</th>
+                    <th className="px-3 py-2.5 whitespace-nowrap">Extra space</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 bg-white">
@@ -205,15 +205,15 @@ export function VerificationAndReportSection({
           <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-white p-6 flex flex-col justify-between">
             <div>
               <p className="text-xs font-medium text-slate-500">
-                Complete Project Report · 16 Pages · PDF + C Source
+                Complete Project Report · {PROJECT_METADATA.reportPages} Pages · PDF + C Source
               </p>
               <h3 className="mt-1 font-display text-xl font-bold text-slate-900">
                 {PROJECT_METADATA.title}
               </h3>
               <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                Full B.Tech IT-E DSA submission report with cover page, diagrams, sample run, and test results — plus the standalone C11 <code className="font-mono text-slate-900">main.c</code> source file.
+                Updated {PROJECT_METADATA.reportPages}-page B.Tech IT-E DSA submission report in C with cover page, diagrams, sample run, and 10 test cases — plus the exact <code className="font-mono text-slate-900">{PROJECT_METADATA.sourceFilename}</code> source file.
               </p>
-              <p className="mt-3 font-mono text-[11px] text-slate-500">
+              <p className="mt-3 font-mono text-[11px] text-slate-500 break-all">
                 $ {PROJECT_METADATA.compilerCommand}
               </p>
             </div>
@@ -229,7 +229,7 @@ export function VerificationAndReportSection({
               </a>
               <a
                 href={REPORT_PDF_URL}
-                download="Smart-Parking-Lot-Project-Report.pdf"
+                download="Smart_Parking_Lot_Formatted.pdf"
                 className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3.5 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition-colors whitespace-nowrap"
               >
                 <Download className="h-3.5 w-3.5" aria-hidden="true" />
@@ -242,7 +242,7 @@ export function VerificationAndReportSection({
                 className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3.5 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100 transition-colors whitespace-nowrap"
               >
                 <Code2 className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Download main.c</span>
+                <span>Download {PROJECT_METADATA.sourceFilename}</span>
               </button>
             </div>
           </div>

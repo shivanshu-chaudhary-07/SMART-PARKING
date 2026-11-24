@@ -1,6 +1,6 @@
 import type { ScriptAction } from '../simulation/parkingLot';
 
-export const REPORT_PDF_URL = '/assets/aistudio/Project-Report_42888068.pdf';
+export const REPORT_PDF_URL = '/assets/aistudio/Smart_Parking_Lot_Formatted_c29b1d92.pdf';
 
 export const PROJECT_METADATA = {
   institute: 'Maharaja Surajmal Institute of Technology',
@@ -15,78 +15,91 @@ export const PROJECT_METADATA = {
   submittedTo: 'Dr. Sunesh Malik',
   submissionDate: '25/11/2026',
   academicSession: '2026–27',
-  compilerCommand: 'gcc -std=c11 -Wall -Wextra main.c -o parking',
+  sourceFilename: 'parking_simple.c',
+  compilerCommand: 'gcc -std=c11 -Wall -Wextra parking_simple.c -o parking',
+  reportPages: 13,
   team: [
     { name: 'Himani', enrollment: '00296302825' },
     { name: 'Khushboo', enrollment: '03296302825' },
     { name: 'Shivanshu', enrollment: '01596302825' },
   ],
-  keywords: ['Data Structures', 'Stack', 'Queue', 'LIFO', 'FIFO', 'Parking Management', 'C', 'Structs'],
+  keywords: ['Data Structures', 'Stack', 'Queue', 'LIFO', 'FIFO', 'Parking Management', 'C', 'Circular Queue'],
 };
 
 export const ABSTRACT_TEXT =
-  'Parking is a daily problem in cities. When a lot is full, vehicles wait at the gate in no fixed order, which wastes time and fuel and causes arguments and traffic jams. This project presents a Smart Parking Lot Management System, a menu-driven C program that uses two core linear data structures: a Stack (LIFO) to store vehicles parked inside a single-lane lot, and a Queue (FIFO) to store vehicles waiting outside. The program enforces lot capacity, parks or queues each arriving vehicle, rejects duplicate vehicle numbers, and automatically parks the longest-waiting vehicle whenever a slot becomes free.';
+  'Parking is a daily problem in cities. When a lot is full, vehicles may wait at the gate in no fixed order, wasting time and fuel. This report presents a Smart Parking Lot Management System, a menu-driven C program that uses two linear data structures. A stack (LIFO) stores vehicles parked inside the lot, and a queue (FIFO) stores vehicles waiting outside. The program checks capacity, rejects duplicate vehicle numbers, and automatically parks the first waiting vehicle when a slot is freed.';
 
 export const OBJECTIVES = [
-  'Store parked vehicles in a Stack (LIFO) and waiting vehicles in a Queue (FIFO).',
-  'Verify available parking capacity before assigning a slot.',
-  'Enqueue arriving vehicles into a fair waiting line when the lot is full.',
-  'Automatically dequeue and park the front waiting vehicle whenever a parked vehicle exits.',
-  'Display live parked and waiting lists on demand while rejecting duplicate vehicle numbers.',
+  'Store parked and waiting vehicles in a stack and queue respectively.',
+  'Check capacity before parking and reject duplicate vehicle numbers.',
+  'Automatically allocate a freed slot to the first waiting vehicle.',
+  'Display the parked list, waiting list and current parking status.',
 ];
 
 export const STACK_VS_QUEUE_ROWS = [
-  { point: 'Rule', stack: 'LIFO (Last In, First Out)', queue: 'FIFO (First In, First Out)' },
-  { point: 'Insertion', stack: 'At the top (push)', queue: 'At the rear (enqueue)' },
-  { point: 'Deletion', stack: 'From the top (pop)', queue: 'From the front (dequeue)' },
-  { point: 'C Implementation', stack: 'Array struct Stack (top)', queue: 'Circular array struct Queue (front, rear)' },
-  { point: 'Role in this project', stack: 'Parked vehicles inside the lane', queue: 'Waiting vehicles outside the gate' },
-  { point: 'Time per operation', stack: 'O(1)', queue: 'O(1)' },
+  { point: 'Rule', stack: 'LIFO', queue: 'FIFO' },
+  { point: 'Insertion', stack: 'Top', queue: 'Rear' },
+  { point: 'Deletion', stack: 'Top', queue: 'Front' },
+  { point: 'Implementation', stack: 'Array, top index', queue: 'Circular array, front/rear' },
+  { point: 'Role', stack: 'Parked vehicles', queue: 'Waiting vehicles' },
+  { point: 'Operation time', stack: 'O(1)', queue: 'O(1)' },
 ];
 
 export const MANUAL_VS_SYSTEM_ROWS = [
-  { point: 'Records', manual: 'Paper register or guard memory', system: 'Stored cleanly in C Stack & Queue structs' },
-  { point: 'When full', manual: 'Vehicles wait in no fixed order', system: 'Vehicles wait in a fair FIFO queue' },
-  { point: 'Free slot', manual: 'Found by manual visual search', system: 'Allocated automatically on exit' },
-  { point: 'Duplicate vehicle', manual: 'May go unnoticed or logged twice', system: 'Detected and rejected immediately' },
-  { point: 'Live status', manual: 'Counted by hand', system: 'Reported instantly via one menu option' },
+  { point: 'Records', manual: 'Register or memory', system: 'Stored in arrays' },
+  { point: 'When full', manual: 'Unorganised waiting', system: 'FIFO waiting queue' },
+  { point: 'Free slot', manual: 'Manual search', system: 'Automatic allocation' },
+  { point: 'Duplicate entry', manual: 'May go unnoticed', system: 'Detected by program' },
+  { point: 'Status', manual: 'Counted manually', system: 'Displayed through menu' },
 ];
 
 export const VARIABLES_TABLE = [
   {
-    item: 'Parked vehicles',
-    type: 'struct Stack parked',
-    purpose: 'Vehicles inside the lot. The last parked vehicle sits at top and leaves first.',
+    item: 'parked',
+    type: 'char[MAX][LEN]',
+    purpose: 'Stack of parked vehicle numbers',
     module: 'stack',
   },
   {
-    item: 'Waiting vehicles',
-    type: 'struct Queue waiting',
-    purpose: 'Vehicles waiting outside. The first to arrive sits at front and is served first.',
+    item: 'waiting',
+    type: 'char[MAX][LEN]',
+    purpose: 'Circular queue of waiting vehicles',
     module: 'queue',
   },
   {
-    item: 'Vehicle number',
-    type: 'char plate[20]',
-    purpose: 'Unique null-terminated registration plate string such as MH12AB1234.',
-    module: 'struct',
+    item: 'top',
+    type: 'int',
+    purpose: 'Index of top parked vehicle (-1 if empty)',
+    module: 'stack',
   },
   {
-    item: 'Capacity',
-    type: 'int capacity',
-    purpose: 'Maximum number of vehicles that can be parked simultaneously.',
-    module: 'struct',
+    item: 'front, rear',
+    type: 'int',
+    purpose: 'Front and next insertion index of queue',
+    module: 'queue',
   },
   {
-    item: 'Parking lot',
-    type: 'struct ParkingLot',
-    purpose: 'Groups the parked stack, waiting queue, and lot capacity into a single C structure.',
-    module: 'struct',
+    item: 'count',
+    type: 'int',
+    purpose: 'Number of waiting vehicles',
+    module: 'queue',
+  },
+  {
+    item: 'capacity',
+    type: 'int',
+    purpose: 'Parking capacity (1 to 100)',
+    module: 'config',
+  },
+  {
+    item: 'MAX, LEN',
+    type: 'Constants',
+    purpose: '100 vehicles per array; 32 characters per record',
+    module: 'config',
   },
 ];
 
 export interface WalkthroughPreset {
-  id: 'table-5-1' | 'sample-6-3';
+  id: 'table-5-1' | 'sample-6-2';
   title: string;
   reference: string;
   capacity: number;
@@ -98,57 +111,53 @@ export const WALKTHROUGH_PRESETS: WalkthroughPreset[] = [
   {
     id: 'table-5-1',
     title: 'Slot Allocation Example (Capacity 3)',
-    reference: 'Table 5.1 · Page 7',
+    reference: 'Table 5.1 · Page 6',
     capacity: 3,
     description: 'Replays the exact 8-step sequence with vehicles V1–V5 demonstrating Stack filling, Queue overflow, and automatic slot transfer.',
     steps: [
       { type: 'entry', plate: 'V1', label: 'Step 1: V1 enters → parked at Slot 1' },
       { type: 'entry', plate: 'V2', label: 'Step 2: V2 enters → parked at Slot 2' },
-      { type: 'entry', plate: 'V3', label: 'Step 3: V3 enters → lot is now full (Slot 3)' },
-      { type: 'entry', plate: 'V4', label: 'Step 4: V4 enters → no space, joins Queue Pos 1' },
-      { type: 'entry', plate: 'V5', label: 'Step 5: V5 enters → no space, joins Queue Pos 2' },
-      { type: 'exit', label: 'Step 6: V3 leaves (TOP) → V4 parked automatically' },
-      { type: 'exit', label: 'Step 7: V4 leaves (TOP) → V5 parked automatically' },
-      { type: 'exit', label: 'Step 8: V5 leaves (TOP) → Slot 3 stays free' },
+      { type: 'entry', plate: 'V3', label: 'Step 3: V3 enters (full) → Slot 3' },
+      { type: 'entry', plate: 'V4', label: 'Step 4: V4 enters → joins Queue Pos 1' },
+      { type: 'entry', plate: 'V5', label: 'Step 5: V5 enters → joins Queue Pos 2' },
+      { type: 'exit', label: 'Step 6: V3 leaves; V4 parked automatically' },
+      { type: 'exit', label: 'Step 7: V4 leaves; V5 parked automatically' },
+      { type: 'exit', label: 'Step 8: V5 leaves → Slot 3 stays free' },
     ],
   },
   {
-    id: 'sample-6-3',
-    title: 'Full Console Test Session (Capacity 2)',
-    reference: 'Section 6.3 · Pages 13–14',
+    id: 'sample-6-2',
+    title: 'Sample Run Session (Capacity 2)',
+    reference: 'Section 6.2 · Page 11',
     capacity: 2,
-    description: 'Replays the recorded C terminal run using real Indian registration plates (MH12AB1234 through KA05IJ7890).',
+    description: 'Replays the recorded C terminal run using plates MH12AB1234, DL01CD5678, UP16EF9012, and HR26GH3456.',
     steps: [
-      { type: 'entry', plate: 'MH12AB1234', label: 'Entry: MH12AB1234 parks at Slot 1' },
-      { type: 'entry', plate: 'DL01CD5678', label: 'Entry: DL01CD5678 parks at Slot 2 (Full)' },
-      { type: 'entry', plate: 'UP16EF9012', label: 'Entry: UP16EF9012 queued at Position 1' },
-      { type: 'entry', plate: 'HR26GH3456', label: 'Entry: HR26GH3456 queued at Position 2' },
-      { type: 'entry', plate: 'KA05IJ7890', label: 'Entry: KA05IJ7890 queued at Position 3' },
-      { type: 'displayParked', label: 'Menu 3: Display Parked Vehicles' },
-      { type: 'displayWaiting', label: 'Menu 4: Display Waiting Vehicles' },
-      { type: 'status', label: 'Menu 5: Show Parking Status' },
-      { type: 'exit', label: 'Menu 2: DL01CD5678 exits → UP16EF9012 auto-parked' },
-      { type: 'exit', label: 'Menu 2: UP16EF9012 exits → HR26GH3456 auto-parked' },
-      { type: 'exit', label: 'Menu 2: HR26GH3456 exits → KA05IJ7890 auto-parked' },
-      { type: 'displayWaiting', label: 'Menu 4: Confirm waiting queue is empty' },
-      { type: 'entry', plate: 'DL01CD5678', label: 'Re-entry: DL01CD5678 returns → Queue Pos 1' },
+      { type: 'entry', plate: 'MH12AB1234', label: 'Choice 1: MH12AB1234 parked at slot 1' },
+      { type: 'entry', plate: 'DL01CD5678', label: 'Choice 1: DL01CD5678 parked at slot 2 (Full)' },
+      { type: 'entry', plate: 'UP16EF9012', label: 'Choice 1: UP16EF9012 waiting at position 1' },
+      { type: 'entry', plate: 'HR26GH3456', label: 'Choice 1: HR26GH3456 waiting at position 2' },
+      { type: 'displayParked', label: 'Choice 3: Display Parked Vehicles' },
+      { type: 'displayWaiting', label: 'Choice 3: Display Waiting Vehicles' },
+      { type: 'status', label: 'Choice 4: Parking Status (2/2 parked, 2 waiting)' },
+      { type: 'exit', label: 'Choice 2: DL01CD5678 leaves → UP16EF9012 auto-parked' },
+      { type: 'entry', plate: 'UP16EF9012', label: 'Choice 1: Duplicate UP16EF9012 rejected' },
     ],
   },
 ];
 
 export const ENTRY_ALGORITHM_STEPS = [
-  { id: 'start', step: 1, title: 'Read vehicle number', detail: 'Read the incoming vehicle registration plate into char plate[20] using scanf().' },
-  { id: 'dup', step: 2, title: 'Check duplicates across Stack & Queue', detail: 'Scan both arrays with strcmp(); if the plate already exists, print a warning and return.' },
-  { id: 'full', step: 3, title: 'Compare Stack top to capacity', detail: 'Check if lot->parked.top == lot->capacity - 1. If full, branch to step 5.' },
-  { id: 'push', step: 4, title: 'Push onto Stack & report slot', detail: 'Increment top, copy plate via strcpy(), print slot number (top + 1), and return.' },
-  { id: 'enqueue', step: 5, title: 'Enqueue into Waiting Queue', detail: 'Insert plate at rear of the circular queue, increment count, print queue position, and return.' },
+  { id: 'start', step: 1, title: 'Read vehicle number', detail: 'Read a bounded line with readLine() and parse plate[LEN] via sscanf().' },
+  { id: 'dup', step: 2, title: 'Vehicle already in system?', detail: 'exists() scans parked[0..top] and circular waiting[] using strcmp(); rejects duplicates.' },
+  { id: 'full', step: 3, title: 'Parking full? (top + 1 < capacity)', detail: 'If space is available, push(plate) onto parked[++top] and show slot number (top + 1).' },
+  { id: 'qfull', step: 4, title: 'Waiting queue full? (count < MAX)', detail: 'When parked is full, check if the circular waiting queue has space; if full, reject entry.' },
+  { id: 'enqueue', step: 5, title: 'Enqueue vehicle & show position', detail: 'Copy plate into waiting[rear], wrap rear = (rear + 1) % MAX, increment count, and report position.' },
 ];
 
 export const EXIT_ALGORITHM_STEPS = [
-  { id: 'empty', step: 1, title: 'Check if Stack is empty', detail: 'If lot->parked.top == -1, print "Parking lot is empty" and return safely (no underflow).' },
-  { id: 'pop', step: 2, title: 'Pop top vehicle from Stack', detail: 'Copy lot->parked.items[top], decrement top, and confirm the vehicle has exited.' },
-  { id: 'qempty', step: 3, title: 'Check if Waiting Queue is empty', detail: 'If lot->waiting.count == 0, leave the freed slot open and return.' },
-  { id: 'transfer', step: 4, title: 'Dequeue front & push onto Stack', detail: 'Read items[front], advance front modulo MAX_QUEUE, push onto parked stack, and announce auto-parking.' },
+  { id: 'empty', step: 1, title: 'Is the stack empty?', detail: 'If top == -1, print "Parking lot is empty." and return safely without underflow.' },
+  { id: 'pop', step: 2, title: 'Pop top vehicle & show exit message', detail: 'Print parked[top--] as departed from the single-lane parking lot.' },
+  { id: 'qempty', step: 3, title: 'Is the waiting queue empty?', detail: 'If count == 0, leave the freed slot open and return.' },
+  { id: 'transfer', step: 4, title: 'Dequeue front & push onto stack', detail: 'push(waiting[front]), advance front = (front + 1) % MAX, decrement count, and show automatic allocation.' },
 ];
 
 export interface TestCaseItem {
@@ -160,84 +169,82 @@ export interface TestCaseItem {
 }
 
 export const TEST_CASES: TestCaseItem[] = [
-  { no: 1, title: 'Vehicle enters when a slot is free', expected: 'Parked, slot number shown', status: 'Pass', demoAction: 'free-slot' },
-  { no: 2, title: 'Vehicle enters when the lot is full', expected: 'Joins the waiting queue', status: 'Pass', demoAction: 'full-lot' },
-  { no: 3, title: 'Exit when the lot is empty', expected: 'Message, no crash', status: 'Pass', demoAction: 'empty-exit' },
-  { no: 4, title: 'Same vehicle number entered twice', expected: 'Second entry rejected', status: 'Pass', demoAction: 'dup-parked' },
-  { no: 5, title: 'Same number entered while waiting', expected: 'Second entry rejected', status: 'Pass', demoAction: 'dup-waiting' },
+  { no: 1, title: 'Entry with free slot', expected: 'Parked, slot number shown', status: 'Pass', demoAction: 'free-slot' },
+  { no: 2, title: 'Entry when parking is full', expected: 'Joins waiting queue', status: 'Pass', demoAction: 'full-lot' },
+  { no: 3, title: 'Exit from empty lot', expected: 'Empty message, no crash', status: 'Pass', demoAction: 'empty-exit' },
+  { no: 4, title: 'Duplicate parked vehicle', expected: 'Entry rejected', status: 'Pass', demoAction: 'dup-parked' },
+  { no: 5, title: 'Duplicate waiting vehicle', expected: 'Entry rejected', status: 'Pass', demoAction: 'dup-waiting' },
   { no: 6, title: 'Exit when vehicles are waiting', expected: 'Front vehicle parked automatically', status: 'Pass', demoAction: 'auto-park' },
-  { no: 7, title: 'Wrong menu number (9)', expected: '"Invalid choice", menu shown again', status: 'Pass' },
-  { no: 8, title: 'Letters instead of a number', expected: '"Invalid input", no crash', status: 'Pass' },
-  { no: 9, title: 'Display parked and waiting lists', expected: 'Correct order with TOP and FRONT marks', status: 'Pass', demoAction: 'display-lists' },
+  { no: 7, title: 'Invalid menu number', expected: 'Invalid choice message', status: 'Pass' },
+  { no: 8, title: 'Letters instead of menu number', expected: 'Invalid choice message', status: 'Pass' },
+  { no: 9, title: 'Display vehicle lists', expected: 'Correct TOP and FRONT order', status: 'Pass', demoAction: 'display-lists' },
+  { no: 10, title: 'Full waiting queue / wraparound', expected: 'Overflow rejected; freed index reused', status: 'Pass' },
 ];
 
 export const COMPLEXITY_ROWS = [
   {
-    fn: 'isFull(), showStatus()',
+    fn: 'push(), enqueue()',
     time: 'O(1)',
     space: 'O(1)',
-    reason: 'Compares integer top / count fields and prints counters directly.',
+    reason: 'Index and one fixed-length record',
   },
   {
-    fn: 'vehicleEntry()',
+    fn: 'entry()',
     time: 'O(n + m)',
     space: 'O(1)',
-    reason: 'Scans both arrays in place with strcmp() for duplicates; push/enqueue is O(1).',
+    reason: 'Duplicate check scans both arrays',
   },
   {
     fn: 'vehicleExit()',
     time: 'O(1)',
     space: 'O(1)',
-    reason: 'At most one stack pop, one circular queue dequeue, and one stack push.',
+    reason: 'Pop, dequeue and push',
   },
   {
-    fn: 'displayParked()',
-    time: 'O(n)',
+    fn: 'display()',
+    time: 'O(n + m)',
     space: 'O(1)',
-    reason: 'Iterates directly from parked.top down to 0 without extra buffer allocation.',
+    reason: 'Traverses both arrays',
   },
   {
-    fn: 'displayWaiting()',
-    time: 'O(m)',
+    fn: 'status()',
+    time: 'O(1)',
     space: 'O(1)',
-    reason: 'Iterates directly from waiting.front across count elements in place.',
+    reason: 'Uses stored counts',
   },
 ];
 
 export const LIMITATIONS = [
-  'Only the top vehicle of the Stack can exit. In a real multi-lane lot, any vehicle can leave.',
-  'All state resides in RAM and is lost when the console program closes.',
-  'No entry/exit timestamp tracking or parking fee calculation.',
-  'Console-only interface modeling one single-lane lot and one gate.',
-  'A waiting vehicle cannot leave the middle of the FIFO queue on its own.',
-  'Registration plate format is accepted as any non-whitespace string in the C version.',
+  'Only the top vehicle of the stack can exit, as the model represents a single lane.',
+  'The parking and waiting arrays each store a maximum of 100 vehicle numbers.',
+  'Data is lost when the program closes.',
+  'No entry time, fee calculation, database or graphical interface.',
+  'Waiting vehicles cannot cancel their position; number plate format is not fully validated.',
 ];
 
 export const FUTURE_SCOPE = [
-  'Allow arbitrary vehicle exit using a dynamic array or hash table paired with an auxiliary stack for temporarily displaced cars.',
-  'Add entry/exit timestamps using <time.h> and automated hourly parking fee computation.',
-  'Persist records to a file (fopen/fwrite) or relational database across restarts.',
-  'Build a full graphical desktop or mobile attendant interface.',
-  'Upgrade to a Priority Queue (binary heap) to fast-track ambulances, emergency responders, or accessibility vehicles.',
-  'Support multi-floor parking garages and distinct vehicle sizes (two-wheelers, sedans, SUVs).',
+  'Allow any vehicle to exit by using an additional stack to move blocking vehicles.',
+  'Add entry and exit timestamps and calculate parking fees.',
+  'Store records in a file or database.',
+  'Introduce a graphical interface and support multiple parking lanes.',
+  'Use a priority queue for emergency vehicles if required.',
 ];
 
 export const REAL_WORLD_USES = [
   'Shopping malls & multiplexes',
   'Hospitals & emergency drop-off lanes',
   'University & college campuses',
-  'Airports & short-stay valet lanes',
   'Residential societies',
-  'Hospital token queues & online ticket waiting rooms',
+  'Systems with limited capacity & waiting lines',
 ];
 
 export const REFERENCES = [
-  { id: 1, text: 'E. Horowitz, S. Sahni and S. Anderson-Freed, Fundamentals of Data Structures in C, Universities Press.' },
-  { id: 2, text: 'S. Lipschutz, Data Structures (Schaum’s Outline Series), McGraw-Hill Education.' },
-  { id: 3, text: 'R. Thareja, Data Structures Using C, Oxford University Press.' },
-  { id: 4, text: 'B. W. Kernighan and D. M. Ritchie, The C Programming Language (2nd Edition), Prentice Hall.' },
-  { id: 5, text: 'ISO/IEC 9899 (C11) Standard Library Reference — <stdio.h> & <string.h>', url: 'https://en.cppreference.com/w/c' },
-  { id: 6, text: 'GNU C Compiler (GCC) Documentation — C11 Compilation & Warning Flags', url: 'https://gcc.gnu.org/onlinedocs/' },
+  { id: 1, text: 'Reema Thareja, Data Structures Using C, Oxford University Press.' },
+  { id: 2, text: 'Ellis Horowitz, Sartaj Sahni and Susan Anderson-Freed, Fundamentals of Data Structures in C, Universities Press.' },
+  { id: 3, text: 'Seymour Lipschutz, Data Structures, Schaum’s Outline Series, McGraw-Hill.' },
+  { id: 4, text: 'Brian W. Kernighan and Dennis M. Ritchie, The C Programming Language, 2nd ed., Prentice Hall.' },
+  { id: 5, text: 'C Reference, String handling', url: 'https://en.cppreference.com/w/c/string/byte' },
+  { id: 6, text: 'C Reference, Input/output', url: 'https://en.cppreference.com/w/c/io' },
 ];
 
 export const SAMPLE_PLATES = [
@@ -251,240 +258,131 @@ export const SAMPLE_PLATES = [
   'PB10PQ4321',
 ];
 
-export const MAIN_C_SOURCE = `/*
- * Smart Parking Lot Management System (Using Stack and Queue in C)
- * Maharaja Surajmal Institute of Technology - Dept. of Information Technology
- * Team: Himani (00296302825), Khushboo (03296302825), Shivanshu (01596302825)
- * Compile: gcc -std=c11 -Wall -Wextra main.c -o parking
- */
-
-#include <stdio.h>
-#include <stdlib.h>
+export const MAIN_C_SOURCE = `#include <stdio.h>
 #include <string.h>
 
-#define MAX_STACK 100
-#define MAX_QUEUE 200
-#define PLATE_LEN 20
+#define MAX 100
+#define LEN 32
 
-typedef struct {
-    char items[MAX_STACK][PLATE_LEN];
-    int top;
-} Stack;
+char parked[MAX][LEN], waiting[MAX][LEN];
+int top = -1, front = 0, rear = 0, count = 0, capacity;
 
-typedef struct {
-    char items[MAX_QUEUE][PLATE_LEN];
-    int front;
-    int rear;
-    int count;
-} Queue;
-
-typedef struct {
-    Stack parked;
-    Queue waiting;
-    int capacity;
-} ParkingLot;
-
-static void initLot(ParkingLot *lot, int capacity) {
-    lot->parked.top = -1;
-    lot->waiting.front = 0;
-    lot->waiting.rear = -1;
-    lot->waiting.count = 0;
-    lot->capacity = capacity;
+void push(const char plate[]) {
+    strcpy(parked[++top], plate);
 }
 
-static int isFull(const ParkingLot *lot) {
-    return (lot->parked.top + 1) >= lot->capacity;
+void enqueue(const char plate[]) {
+    strcpy(waiting[rear], plate);
+    rear = (rear + 1) % MAX;
+    count++;
 }
 
-static int isDuplicate(const ParkingLot *lot, const char *plate) {
-    for (int i = 0; i <= lot->parked.top; i++) {
-        if (strcmp(lot->parked.items[i], plate) == 0) {
-            return 1;
-        }
-    }
-    for (int i = 0; i < lot->waiting.count; i++) {
-        int idx = (lot->waiting.front + i) % MAX_QUEUE;
-        if (strcmp(lot->waiting.items[idx], plate) == 0) {
-            return 1;
-        }
-    }
+int exists(const char plate[]) {
+    for (int i = 0; i <= top; i++)
+        if (strcmp(parked[i], plate) == 0) return 1;
+    for (int i = 0; i < count; i++)
+        if (strcmp(waiting[(front+i)%MAX], plate) == 0) return 1;
     return 0;
 }
 
-static void pushParked(ParkingLot *lot, const char *plate) {
-    lot->parked.top++;
-    strncpy(lot->parked.items[lot->parked.top], plate, PLATE_LEN - 1);
-    lot->parked.items[lot->parked.top][PLATE_LEN - 1] = '\\0';
-}
-
-static void popParked(ParkingLot *lot, char *outPlate) {
-    strncpy(outPlate, lot->parked.items[lot->parked.top], PLATE_LEN - 1);
-    outPlate[PLATE_LEN - 1] = '\\0';
-    lot->parked.top--;
-}
-
-static int enqueueWaiting(ParkingLot *lot, const char *plate) {
-    if (lot->waiting.count >= MAX_QUEUE) {
-        return 0;
-    }
-    lot->waiting.rear = (lot->waiting.rear + 1) % MAX_QUEUE;
-    strncpy(lot->waiting.items[lot->waiting.rear], plate, PLATE_LEN - 1);
-    lot->waiting.items[lot->waiting.rear][PLATE_LEN - 1] = '\\0';
-    lot->waiting.count++;
-    return 1;
-}
-
-static int dequeueWaiting(ParkingLot *lot, char *outPlate) {
-    if (lot->waiting.count == 0) {
-        return 0;
-    }
-    strncpy(outPlate, lot->waiting.items[lot->waiting.front], PLATE_LEN - 1);
-    outPlate[PLATE_LEN - 1] = '\\0';
-    lot->waiting.front = (lot->waiting.front + 1) % MAX_QUEUE;
-    lot->waiting.count--;
-    return 1;
-}
-
-static void vehicleEntry(ParkingLot *lot, const char *plate) {
-    if (isDuplicate(lot, plate)) {
+void entry(const char plate[]) {
+    if (exists(plate)) {
         printf("Vehicle %s is already in the system.\\n", plate);
-        return;
-    }
-    if (!isFull(lot)) {
-        pushParked(lot, plate);
-        printf("Vehicle %s parked at slot %d.\\n", plate, lot->parked.top + 1);
-    } else if (enqueueWaiting(lot, plate)) {
-        printf("Parking is FULL. Vehicle %s added to waiting queue at position %d.\\n",
-               plate, lot->waiting.count);
+    } else if (top + 1 < capacity) {
+        push(plate);
+        printf("Vehicle %s parked at slot %d.\\n", plate, top+1);
+    } else if (count < MAX) {
+        enqueue(plate);
+        printf("Parking full. %s waiting at position %d.\\n", plate, count);
     } else {
-        printf("Waiting queue is full. Cannot accept vehicle %s.\\n", plate);
+        puts("Waiting queue is full.");
     }
 }
 
-static void vehicleExit(ParkingLot *lot) {
-    if (lot->parked.top == -1) {
-        printf("Parking lot is empty. No vehicle to exit.\\n");
+void vehicleExit(void) {
+    if (top == -1) {
+        puts("Parking lot is empty.");
         return;
     }
-    char leaving[PLATE_LEN];
-    popParked(lot, leaving);
-    printf("Vehicle %s has left the parking lot.\\n", leaving);
-
-    if (lot->waiting.count > 0) {
-        char nextVehicle[PLATE_LEN];
-        dequeueWaiting(lot, nextVehicle);
-        pushParked(lot, nextVehicle);
-        printf("Slot free. Waiting vehicle %s is now parked automatically.\\n", nextVehicle);
+    printf("Vehicle %s has left.\\n", parked[top--]);
+    if (count > 0) {
+        push(waiting[front]);
+        front = (front + 1) % MAX;
+        count--;
+        printf("%s parked automatically.\\n", parked[top]);
     }
 }
 
-static void displayParked(const ParkingLot *lot) {
-    if (lot->parked.top == -1) {
-        printf("No vehicles are parked.\\n");
-        return;
-    }
-    printf("Parked vehicles (top to bottom):\\n");
-    for (int i = lot->parked.top; i >= 0; i--) {
-        printf("  Slot %d : %s%s\\n",
-               i + 1,
-               lot->parked.items[i],
-               (i == lot->parked.top) ? " <-- TOP" : "");
-    }
+void display(void) {
+    puts("Parked vehicles (top to bottom):");
+    if (top == -1) puts("None");
+    for (int i = top; i >= 0; i--)
+        printf("Slot %d: %s%s\\n", i+1, parked[i], i==top?" (TOP)":"");
+    puts("Waiting vehicles (front to rear):");
+    if (count == 0) puts("None");
+    for (int i = 0; i < count; i++)
+        printf("Position %d: %s%s\\n", i+1, waiting[(front+i)%MAX],
+               i==0?" (FRONT)":"");
 }
 
-static void displayWaiting(const ParkingLot *lot) {
-    if (lot->waiting.count == 0) {
-        printf("No vehicles are waiting.\\n");
-        return;
-    }
-    printf("Waiting vehicles (front to rear):\\n");
-    for (int i = 0; i < lot->waiting.count; i++) {
-        int idx = (lot->waiting.front + i) % MAX_QUEUE;
-        printf("  Position %d : %s%s\\n",
-               i + 1,
-               lot->waiting.items[idx],
-               (i == 0) ? " <-- FRONT" : "");
-    }
-}
-
-static void showStatus(const ParkingLot *lot) {
-    int parkedCount = lot->parked.top + 1;
-    int freeSlots = lot->capacity - parkedCount;
+void status(void) {
     printf("Capacity: %d | Parked: %d | Free: %d | Waiting: %d\\n",
-           lot->capacity, parkedCount, freeSlots, lot->waiting.count);
+           capacity, top+1, capacity-top-1, count);
 }
 
-static void clearInputBuffer(void) {
-    int ch;
-    while ((ch = getchar()) != '\\n' && ch != EOF) {
-        /* discard remaining characters */
+/* Read a bounded line; discard any excess input. */
+int readLine(char line[], int size) {
+    if (!fgets(line, size, stdin)) return 0;
+    if (!strchr(line, '\\n')) {
+        int ch;
+        while ((ch = getchar()) != '\\n' && ch != EOF) {}
+        return -1;
     }
+    return 1;
+}
+
+int readNumber(void) {
+    char line[80], extra;
+    int n, result = readLine(line, sizeof line);
+    if (result == 0) return -2;
+    if (result == 1 && sscanf(line, "%3d %c", &n, &extra) == 1 && n >= 0)
+        return n;
+    return -1;
 }
 
 int main(void) {
-    int capacity = 0;
-    printf("===== SMART PARKING LOT MANAGEMENT SYSTEM (C) =====\\n");
-    while (1) {
-        printf("Enter parking lot capacity (1-%d): ", MAX_STACK);
-        if (scanf("%d", &capacity) == 1 && capacity >= 1 && capacity <= MAX_STACK) {
-            clearInputBuffer();
-            break;
-        }
-        printf("Invalid input. Please enter a number between 1 and %d.\\n", MAX_STACK);
-        clearInputBuffer();
-    }
+    int choice;
+    char line[80], plate[LEN], extra;
+    puts("===== SMART PARKING LOT MANAGEMENT SYSTEM =====");
+    do {
+        printf("Enter parking capacity (1-100): ");
+        capacity = readNumber();
+        if (capacity == -2) return 0;
+    } while (capacity < 1 || capacity > MAX);
 
-    ParkingLot lot;
-    initLot(&lot, capacity);
-
-    int choice = 0;
-    char plate[PLATE_LEN];
-
-    while (1) {
-        printf("\\n--- MENU ---\\n");
-        printf("1. Vehicle Entry\\n");
-        printf("2. Vehicle Exit\\n");
-        printf("3. Display Parked Vehicles\\n");
-        printf("4. Display Waiting Vehicles\\n");
-        printf("5. Show Parking Status\\n");
-        printf("6. Exit Program\\n");
+    do {
+        puts("\\n1. Vehicle Entry\\n2. Vehicle Exit\\n3. Display Vehicles"
+             "\\n4. Parking Status\\n0. Exit Program");
         printf("Enter choice: ");
-
-        if (scanf("%d", &choice) != 1) {
-            printf("Invalid input. Please enter a number.\\n");
-            clearInputBuffer();
-            continue;
-        }
-        clearInputBuffer();
-
+        choice = readNumber();
         switch (choice) {
             case 1:
                 printf("Enter vehicle number: ");
-                if (scanf("%19s", plate) == 1) {
-                    clearInputBuffer();
-                    vehicleEntry(&lot, plate);
-                }
+                if (readLine(line, sizeof line) == 1 &&
+                    sscanf(line, "%31s %c", plate, &extra) == 1)
+                    entry(plate);
+                else puts("Invalid vehicle number.");
                 break;
-            case 2:
-                vehicleExit(&lot);
-                break;
-            case 3:
-                displayParked(&lot);
-                break;
-            case 4:
-                displayWaiting(&lot);
-                break;
-            case 5:
-                showStatus(&lot);
-                break;
-            case 6:
-                printf("Exiting Smart Parking Lot Management System.\\n");
-                return 0;
-            default:
-                printf("Invalid choice. Select an option from 1 to 6.\\n");
-                break;
+            case 2: vehicleExit(); break;
+            case 3: display(); break;
+            case 4: status(); break;
+            case 0: puts("Thank you for using the system."); break;
+            case -2: return 0;
+            default: puts("Invalid choice. Try again.");
         }
-    }
+    } while (choice != 0);
+    return 0;
 }
 `;
+
 

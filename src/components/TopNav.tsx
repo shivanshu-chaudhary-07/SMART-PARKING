@@ -39,7 +39,7 @@ export function TopNav() {
         <div className="flex items-center gap-2 shrink-0">
           <a
             href={REPORT_PDF_URL}
-            download="Smart-Parking-Lot-Project-Report.pdf"
+            download="Smart_Parking_Lot_Formatted.pdf"
             className="hidden sm:inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
           >
             <Download className="h-3.5 w-3.5" aria-hidden="true" />
@@ -76,7 +76,7 @@ export function TopNav() {
             ))}
             <a
               href={REPORT_PDF_URL}
-              download="Smart-Parking-Lot-Project-Report.pdf"
+              download="Smart_Parking_Lot_Formatted.pdf"
               onClick={() => setMobileOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
             >

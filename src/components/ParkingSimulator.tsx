@@ -209,7 +209,7 @@ export function ParkingSimulator({
             Interactive Stack &amp; Queue Simulator
           </h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            Mirrors the exact C <code className="font-mono text-slate-900">struct ParkingLot</code> logic: vehicles park in a LIFO stack, overflow into a FIFO waiting queue, and auto-park when a slot opens.
+            Mirrors the exact C program (<code className="font-mono text-slate-900">parking_simple.c</code>): vehicles park in an array-based LIFO stack, overflow into a circular FIFO waiting queue, and auto-park when a slot opens.
           </p>
         </div>
 
@@ -270,7 +270,7 @@ export function ParkingSimulator({
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between text-xs mb-2">
                     <span className="font-semibold text-slate-900">Parked · Stack (LIFO)</span>
-                    <span className="font-mono text-blue-700">struct Stack</span>
+                    <span className="font-mono text-blue-700">parked[MAX][LEN]</span>
                   </div>
                   <div className="mb-1.5 flex items-center justify-between px-1 text-[11px] font-mono text-slate-500">
                     <span className="inline-flex items-center gap-1 text-blue-700 font-medium">
@@ -332,7 +332,7 @@ export function ParkingSimulator({
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between text-xs mb-2">
                     <span className="font-semibold text-slate-900">Waiting · Queue (FIFO)</span>
-                    <span className="font-mono text-amber-700">struct Queue</span>
+                    <span className="font-mono text-amber-700">waiting[MAX][LEN]</span>
                   </div>
                   <div className="mb-1.5 flex items-center justify-between px-1 text-[11px] font-mono text-slate-500">
                     <span className="text-emerald-700 font-medium">← DEQUEUE</span>

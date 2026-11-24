@@ -118,7 +118,7 @@ export default function App() {
             </a>
             <a
               href={REPORT_PDF_URL}
-              download="Smart-Parking-Lot-Project-Report.pdf"
+              download="Smart_Parking_Lot_Formatted.pdf"
               className="font-medium text-slate-800 hover:text-blue-700 transition-colors"
             >
               Download PDF

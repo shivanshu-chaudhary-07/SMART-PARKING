@@ -196,99 +196,128 @@ export function DesignSection() {
             <div className="lg:col-span-7 flex justify-center rounded-lg border border-slate-200 bg-white p-4">
               {flowTab === 'entry' ? (
                 <svg
-                  viewBox="0 0 460 390"
+                  viewBox="0 0 460 440"
                   className="h-auto w-full max-w-md"
                   role="img"
                   aria-label="Figure 5.2 Flowchart of vehicle entry"
                 >
-                  <rect x="130" y="8" width="170" height="30" rx="15" fill="#DCFCE7" stroke="#15803D" strokeWidth="1.5" />
-                  <text x="215" y="27" textAnchor="middle" fontSize="11" fontWeight="600" fill="#14532D" fontFamily="DM Sans, sans-serif">START (Vehicle Arrives)</text>
-                  <line x1="215" y1="38" x2="215" y2="54" stroke="#334155" strokeWidth="1.5" />
+                  <rect x="130" y="6" width="170" height="28" rx="14" fill="#DCFCE7" stroke="#15803D" strokeWidth="1.5" />
+                  <text x="215" y="24" textAnchor="middle" fontSize="11" fontWeight="600" fill="#14532D" fontFamily="DM Sans, sans-serif">START: Vehicle arrives</text>
+                  <line x1="215" y1="34" x2="215" y2="48" stroke="#334155" strokeWidth="1.5" />
 
                   <rect
                     x="130"
-                    y="54"
+                    y="48"
                     width="170"
-                    height="30"
+                    height="28"
                     rx="4"
                     fill={activeStepId === 'start' ? '#DBEAFE' : '#EFF6FF'}
                     stroke={activeStepId === 'start' ? '#1D4ED8' : '#3B82F6'}
                     strokeWidth={activeStepId === 'start' ? '2.5' : '1.4'}
                   />
-                  <text x="215" y="73" textAnchor="middle" fontSize="11" fontWeight="600" fill="#0F172A" fontFamily="DM Sans, sans-serif">1. Read vehicle number</text>
-                  <line x1="215" y1="84" x2="215" y2="100" stroke="#334155" strokeWidth="1.5" />
+                  <text x="215" y="66" textAnchor="middle" fontSize="11" fontWeight="600" fill="#0F172A" fontFamily="DM Sans, sans-serif">1. Read vehicle number</text>
+                  <line x1="215" y1="76" x2="215" y2="90" stroke="#334155" strokeWidth="1.5" />
 
                   <polygon
-                    points="215,100 305,130 215,160 125,130"
+                    points="215,90 300,118 215,146 130,118"
                     fill={activeStepId === 'dup' ? '#FEF3C7' : '#FFFBEB'}
                     stroke={activeStepId === 'dup' ? '#B45309' : '#D97706'}
                     strokeWidth={activeStepId === 'dup' ? '2.5' : '1.4'}
                   />
-                  <text x="215" y="127" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">Already in</text>
-                  <text x="215" y="140" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">the system?</text>
+                  <text x="215" y="115" textAnchor="middle" fontSize="10" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">Vehicle already</text>
+                  <text x="215" y="128" textAnchor="middle" fontSize="10" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">in system?</text>
 
-                  <line x1="305" y1="130" x2="342" y2="130" stroke="#334155" strokeWidth="1.5" />
-                  <text x="322" y="124" textAnchor="middle" fontSize="9.5" fill="#B91C1C" fontWeight="600">Yes</text>
+                  <line x1="300" y1="118" x2="338" y2="118" stroke="#334155" strokeWidth="1.5" />
+                  <text x="319" y="112" textAnchor="middle" fontSize="9.5" fill="#B91C1C" fontWeight="600">Yes</text>
                   <rect
-                    x="342"
-                    y="112"
-                    width="108"
+                    x="338"
+                    y="100"
+                    width="112"
                     height="36"
                     rx="4"
                     fill={activeStepId === 'dup' ? '#FEE2E2' : '#FEF2F2'}
                     stroke="#DC2626"
                     strokeWidth={activeStepId === 'dup' ? '2.2' : '1.3'}
                   />
-                  <text x="396" y="128" textAnchor="middle" fontSize="10" fontWeight="600" fill="#991B1B" fontFamily="DM Sans, sans-serif">Show &apos;already</text>
-                  <text x="396" y="140" textAnchor="middle" fontSize="10" fontWeight="600" fill="#991B1B" fontFamily="DM Sans, sans-serif">present&apos;</text>
-                  <path d="M 396 148 L 396 368 L 280 368" fill="none" stroke="#94A3B8" strokeWidth="1.4" strokeDasharray="4 3" />
+                  <text x="394" y="116" textAnchor="middle" fontSize="10" fontWeight="600" fill="#991B1B" fontFamily="DM Sans, sans-serif">Reject duplicate</text>
+                  <text x="394" y="128" textAnchor="middle" fontSize="10" fontWeight="600" fill="#991B1B" fontFamily="DM Sans, sans-serif">vehicle</text>
+                  <path d="M 394 136 L 394 416 L 280 416" fill="none" stroke="#94A3B8" strokeWidth="1.4" strokeDasharray="4 3" />
 
-                  <line x1="215" y1="160" x2="215" y2="180" stroke="#334155" strokeWidth="1.5" />
-                  <text x="228" y="174" fontSize="9.5" fill="#334155" fontWeight="600">No</text>
+                  <line x1="215" y1="146" x2="215" y2="164" stroke="#334155" strokeWidth="1.5" />
+                  <text x="228" y="159" fontSize="9.5" fill="#334155" fontWeight="600">No</text>
 
                   <polygon
-                    points="215,180 305,210 215,240 125,210"
+                    points="215,164 295,192 215,220 135,192"
                     fill={activeStepId === 'full' ? '#FEF3C7' : '#FFFBEB'}
                     stroke={activeStepId === 'full' ? '#B45309' : '#D97706'}
                     strokeWidth={activeStepId === 'full' ? '2.5' : '1.4'}
                   />
-                  <text x="215" y="207" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">Parking full?</text>
-                  <text x="215" y="220" textAnchor="middle" fontSize="9.5" fill="#78350F" fontFamily="IBM Plex Mono, monospace">(parked = cap)</text>
+                  <text x="215" y="189" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">Parking</text>
+                  <text x="215" y="202" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">full?</text>
 
-                  <path d="M 125 210 L 95 210 L 95 256" fill="none" stroke="#1D4ED8" strokeWidth="1.6" />
-                  <text x="108" y="204" fontSize="9.5" fill="#1D4ED8" fontWeight="600">No</text>
+                  <line x1="135" y1="192" x2="112" y2="192" stroke="#1D4ED8" strokeWidth="1.6" />
+                  <text x="123" y="186" textAnchor="middle" fontSize="9.5" fill="#1D4ED8" fontWeight="600">No</text>
                   <rect
-                    x="18"
-                    y="256"
-                    width="154"
-                    height="46"
+                    x="6"
+                    y="170"
+                    width="106"
+                    height="44"
                     rx="5"
-                    fill={activeStepId === 'push' ? '#DBEAFE' : '#EFF6FF'}
+                    fill={activeStepId === 'full' ? '#DBEAFE' : '#EFF6FF'}
                     stroke="#1D4ED8"
-                    strokeWidth={activeStepId === 'push' ? '2.5' : '1.4'}
+                    strokeWidth={activeStepId === 'full' ? '2.5' : '1.4'}
                   />
-                  <text x="95" y="276" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#1E3A8A" fontFamily="DM Sans, sans-serif">4. PUSH onto Stack</text>
-                  <text x="95" y="291" textAnchor="middle" fontSize="10" fill="#1E40AF" fontFamily="DM Sans, sans-serif">Show slot number</text>
-                  <path d="M 95 302 L 95 368 L 150 368" fill="none" stroke="#334155" strokeWidth="1.5" />
+                  <text x="59" y="189" textAnchor="middle" fontSize="10" fontWeight="600" fill="#1E3A8A" fontFamily="DM Sans, sans-serif">Push onto stack</text>
+                  <text x="59" y="203" textAnchor="middle" fontSize="9.5" fill="#1E40AF" fontFamily="DM Sans, sans-serif">Show slot number</text>
+                  <path d="M 59 214 L 59 416 L 150 416" fill="none" stroke="#334155" strokeWidth="1.5" />
 
-                  <path d="M 305 210 L 315 210 L 315 256" fill="none" stroke="#B45309" strokeWidth="1.6" />
-                  <text x="310" y="204" fontSize="9.5" fill="#B45309" fontWeight="600">Yes</text>
+                  <line x1="215" y1="220" x2="215" y2="242" stroke="#B45309" strokeWidth="1.6" />
+                  <text x="229" y="235" fontSize="9.5" fill="#B45309" fontWeight="600">Yes</text>
+
+                  <polygon
+                    points="215,242 300,270 215,298 130,270"
+                    fill={activeStepId === 'qfull' ? '#FEF3C7' : '#FFFBEB'}
+                    stroke={activeStepId === 'qfull' ? '#B45309' : '#D97706'}
+                    strokeWidth={activeStepId === 'qfull' ? '2.5' : '1.4'}
+                  />
+                  <text x="215" y="267" textAnchor="middle" fontSize="10" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">Waiting queue</text>
+                  <text x="215" y="280" textAnchor="middle" fontSize="10" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">full?</text>
+
+                  <line x1="300" y1="270" x2="338" y2="270" stroke="#334155" strokeWidth="1.5" />
+                  <text x="319" y="264" textAnchor="middle" fontSize="9.5" fill="#B91C1C" fontWeight="600">Yes</text>
                   <rect
-                    x="230"
-                    y="256"
-                    width="154"
+                    x="338"
+                    y="252"
+                    width="112"
+                    height="36"
+                    rx="4"
+                    fill={activeStepId === 'qfull' ? '#FEE2E2' : '#FEF2F2'}
+                    stroke="#DC2626"
+                    strokeWidth={activeStepId === 'qfull' ? '2.2' : '1.3'}
+                  />
+                  <text x="394" y="268" textAnchor="middle" fontSize="10" fontWeight="600" fill="#991B1B" fontFamily="DM Sans, sans-serif">Reject entry:</text>
+                  <text x="394" y="280" textAnchor="middle" fontSize="10" fontWeight="600" fill="#991B1B" fontFamily="DM Sans, sans-serif">queue full</text>
+                  <line x1="394" y1="288" x2="394" y2="416" stroke="#94A3B8" strokeWidth="1.4" strokeDasharray="4 3" />
+
+                  <line x1="215" y1="298" x2="215" y2="322" stroke="#334155" strokeWidth="1.5" />
+                  <text x="228" y="314" fontSize="9.5" fill="#334155" fontWeight="600">No</text>
+
+                  <rect
+                    x="130"
+                    y="322"
+                    width="170"
                     height="46"
                     rx="5"
                     fill={activeStepId === 'enqueue' ? '#FEF3C7' : '#FFFBEB'}
                     stroke="#B45309"
                     strokeWidth={activeStepId === 'enqueue' ? '2.5' : '1.4'}
                   />
-                  <text x="307" y="276" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">5. ENQUEUE into Queue</text>
-                  <text x="307" y="291" textAnchor="middle" fontSize="10" fill="#92400E" fontFamily="DM Sans, sans-serif">Show queue position</text>
-                  <path d="M 307 302 L 307 338 L 215 338 L 215 352" fill="none" stroke="#334155" strokeWidth="1.5" />
+                  <text x="215" y="342" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#78350F" fontFamily="DM Sans, sans-serif">5. Enqueue vehicle</text>
+                  <text x="215" y="357" textAnchor="middle" fontSize="10" fill="#92400E" fontFamily="DM Sans, sans-serif">Show queue position</text>
+                  <line x1="215" y1="368" x2="215" y2="400" stroke="#334155" strokeWidth="1.5" />
 
-                  <rect x="150" y="352" width="130" height="30" rx="15" fill="#DCFCE7" stroke="#15803D" strokeWidth="1.5" />
-                  <text x="215" y="371" textAnchor="middle" fontSize="11" fontWeight="600" fill="#14532D" fontFamily="DM Sans, sans-serif">END</text>
+                  <rect x="150" y="400" width="130" height="30" rx="15" fill="#DCFCE7" stroke="#15803D" strokeWidth="1.5" />
+                  <text x="215" y="419" textAnchor="middle" fontSize="11" fontWeight="600" fill="#14532D" fontFamily="DM Sans, sans-serif">END</text>
                 </svg>
               ) : (
                 <svg
