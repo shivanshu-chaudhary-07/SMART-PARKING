@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { TopNav } from './components/TopNav';
 import { HeroSection } from './components/HeroSection';
 import { ParkingSimulator } from './components/ParkingSimulator';
-import { ConceptsSection } from './components/ConceptsSection';
-import { ArchitectureSection } from './components/ArchitectureSection';
+import { DesignSection } from './components/DesignSection';
 import { SourceCodeSection } from './components/SourceCodeSection';
 import { VerificationAndReportSection } from './components/VerificationAndReportSection';
 import {
@@ -22,7 +21,6 @@ import {
 } from './data/reportData';
 
 function createInitialDemoState(): ParkingLotState {
-  // Start with 2 vehicles parked in a 3-slot lot so visitors immediately see LIFO slots in action
   let state = createParkingLot(3);
   state = vehicleEntry(state, 'MH12AB1234');
   state = vehicleEntry(state, 'DL01CD5678');
@@ -98,20 +96,19 @@ export default function App() {
           presetStep={presetStep}
           onSelectPreset={handleSelectPreset}
         />
-        <ConceptsSection />
-        <ArchitectureSection />
+        <DesignSection />
         <SourceCodeSection />
         <VerificationAndReportSection onRunTestCase={handleRunTestCase} />
       </main>
 
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500">
+      <footer className="border-t border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-6xl px-4 py-7 sm:px-6 lg:px-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500">
           <div>
             <p className="font-medium text-slate-800">
               {PROJECT_METADATA.title} · {PROJECT_METADATA.institute}
             </p>
-            <p className="mt-1">
-              {PROJECT_METADATA.team.map((m) => m.name).join(', ')} ({PROJECT_METADATA.section}) · Guided by {PROJECT_METADATA.submittedTo} · Session {PROJECT_METADATA.academicSession}
+            <p className="mt-0.5">
+              {PROJECT_METADATA.team.map((m) => m.name).join(', ')} ({PROJECT_METADATA.section}) · Submitted to {PROJECT_METADATA.submittedTo} · {PROJECT_METADATA.academicSession}
             </p>
           </div>
           <div className="flex items-center gap-5 shrink-0">

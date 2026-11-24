@@ -4,8 +4,7 @@ import { REPORT_PDF_URL } from '../data/reportData';
 
 const NAV_LINKS = [
   { href: '#simulator', label: 'Simulator' },
-  { href: '#concepts', label: 'Concepts' },
-  { href: '#architecture', label: 'Architecture' },
+  { href: '#design', label: 'Design' },
   { href: '#source-code', label: 'Source Code' },
   { href: '#report', label: 'Report' },
 ];
@@ -15,8 +14,7 @@ export function TopNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
-        {/* Zone 1: Single text element wordmark */}
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
         <a
           href="#top"
           className="font-display text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
@@ -24,7 +22,6 @@ export function TopNav() {
           Smart Parking
         </a>
 
-        {/* Zone 2: 5 clean single-line text nav links */}
         <nav
           aria-label="Primary navigation"
           className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600"
@@ -40,7 +37,6 @@ export function TopNav() {
           ))}
         </nav>
 
-        {/* Zone 3: 1 primary action */}
         <div className="flex items-center gap-2 shrink-0">
           <a
             href={REPORT_PDF_URL}

@@ -1,26 +1,29 @@
 import { useMemo, useRef, useState } from 'react';
 import { Check, Copy, Download } from 'lucide-react';
-import {
-  CODE_EXPLANATIONS,
-  MAIN_CPP_SOURCE,
-  PROJECT_METADATA,
-} from '../data/reportData';
+import { MAIN_CPP_SOURCE, PROJECT_METADATA } from '../data/reportData';
+
+const CODE_JUMPS = [
+  { id: 'class', label: 'ParkingLot Class', range: [11, 38] as [number, number] },
+  { id: 'entry', label: 'vehicleEntry()', range: [40, 55] as [number, number] },
+  { id: 'exit', label: 'vehicleExit()', range: [57, 73] as [number, number] },
+  { id: 'display', label: 'Display & Status', range: [75, 115] as [number, number] },
+  { id: 'main', label: 'main() Menu', range: [117, 177] as [number, number] },
+];
 
 export function SourceCodeSection() {
-  const [activeSectionId, setActiveSectionId] = useState<string>('entry');
+  const [activeId, setActiveId] = useState<string>('entry');
   const [copied, setCopied] = useState(false);
   const codeContainerRef = useRef<HTMLDivElement | null>(null);
 
   const lines = useMemo(() => MAIN_CPP_SOURCE.split('\n'), []);
-  const activeSection =
-    CODE_EXPLANATIONS.find((s) => s.id === activeSectionId) ?? CODE_EXPLANATIONS[0];
+  const activeJump = CODE_JUMPS.find((j) => j.id === activeId) ?? CODE_JUMPS[1];
 
-  function handleSelectSection(id: string, startLine: number) {
-    setActiveSectionId(id);
+  function handleJump(id: string, startLine: number) {
+    setActiveId(id);
     const lineEl = codeContainerRef.current?.querySelector(`[data-line="${startLine}"]`);
     if (lineEl instanceof HTMLElement && codeContainerRef.current) {
       const container = codeContainerRef.current;
-      const offsetTop = lineEl.offsetTop - container.offsetTop - 32;
+      const offsetTop = lineEl.offsetTop - container.offsetTop - 28;
       container.scrollTo({ top: Math.max(0, offsetTop), behavior: 'smooth' });
     }
   }
@@ -48,18 +51,16 @@ export function SourceCodeSection() {
   }
 
   return (
-    <section id="source-code" className="scroll-mt-16 border-t border-slate-200 bg-white py-16 lg:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="source-code" className="scroll-mt-16 border-t border-slate-200 bg-slate-50 py-14 lg:py-16">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="max-w-3xl">
-            <p className="text-xs font-medium text-blue-700">
-              04. Complete C++17 Implementation (Chapter 6)
-            </p>
-            <h2 className="mt-1.5 font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl text-balance">
-              Source Code &amp; Line-by-Line Walkthrough
+          <div className="max-w-2xl">
+            <p className="text-xs font-medium text-blue-700">03. Implementation</p>
+            <h2 className="mt-1 font-display text-3xl font-bold tracking-tight text-slate-900 text-balance">
+              C++17 Source Code (main.cpp)
             </h2>
-            <p className="mt-3 text-base text-slate-600 leading-relaxed">
-              The complete 177-line <code className="font-mono text-sm text-slate-900">main.cpp</code> program compiled cleanly with <code className="font-mono text-xs text-slate-800">{PROJECT_METADATA.compilerCommand}</code>. Select any section on the left to highlight its exact lines.
+            <p className="mt-2 text-sm text-slate-600">
+              Compiled cleanly using <code className="font-mono text-xs text-slate-800">{PROJECT_METADATA.compilerCommand}</code>.
             </p>
           </div>
 
@@ -72,7 +73,7 @@ export function SourceCodeSection() {
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-700" aria-hidden="true" />
-                  <span>Copied main.cpp</span>
+                  <span>Copied</span>
                 </>
               ) : (
                 <>
@@ -92,73 +93,59 @@ export function SourceCodeSection() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-start">
-          {/* Interactive Section 6.2 Explanation Rail */}
-          <div className="lg:col-span-4 space-y-2">
-            <p className="text-xs font-medium text-slate-500 mb-2">
-              Section 6.2 Code Walkthrough
-            </p>
-            {CODE_EXPLANATIONS.map((sec) => {
-              const active = sec.id === activeSection.id;
+        {/* Compact horizontal jump tabs */}
+        <div className="mt-6 flex flex-wrap items-center gap-1.5" role="group" aria-label="Jump to function in main.cpp">
+          {CODE_JUMPS.map((jump) => {
+            const active = jump.id === activeJump.id;
+            return (
+              <button
+                key={jump.id}
+                type="button"
+                onClick={() => handleJump(jump.id, jump.range[0])}
+                className={`rounded-lg px-3 py-1.5 font-mono text-xs font-medium transition-colors whitespace-nowrap ${
+                  active
+                    ? 'bg-blue-700 text-white'
+                    : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                {jump.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Full-width clean code viewer */}
+        <div className="mt-3 rounded-xl border border-slate-800 bg-slate-950 overflow-hidden">
+          <div className="flex items-center justify-between border-b border-slate-800 px-4 py-2 text-xs font-mono">
+            <span className="text-slate-200 font-medium">main.cpp (177 lines)</span>
+            <span className="text-sky-300 tabular-nums">
+              Lines {activeJump.range[0]}–{activeJump.range[1]} · {activeJump.label}
+            </span>
+          </div>
+          <div
+            ref={codeContainerRef}
+            data-testid="cpp-code-viewer"
+            className="max-h-[480px] overflow-auto py-3 font-mono text-xs leading-6"
+          >
+            {lines.map((line, index) => {
+              const lineNum = index + 1;
+              const isHighlighted =
+                lineNum >= activeJump.range[0] && lineNum <= activeJump.range[1];
               return (
-                <button
-                  key={sec.id}
-                  type="button"
-                  onClick={() => handleSelectSection(sec.id, sec.lineRange[0])}
-                  className={`w-full rounded-lg border p-3.5 text-left transition-colors ${
-                    active
-                      ? 'border-blue-600 bg-blue-50/70'
-                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                <div
+                  key={lineNum}
+                  data-line={lineNum}
+                  className={`flex px-4 ${
+                    isHighlighted ? 'bg-blue-900/35 text-slate-50' : 'text-slate-300'
                   }`}
                 >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-sm font-semibold text-slate-900">{sec.title}</span>
-                    <span className="font-mono text-[11px] text-blue-700 tabular-nums whitespace-nowrap shrink-0">
-                      L{sec.lineRange[0]}–{sec.lineRange[1]}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                    {sec.summary}
-                  </p>
-                </button>
+                  <span className="w-10 shrink-0 select-none pr-4 text-right text-slate-500 tabular-nums">
+                    {lineNum}
+                  </span>
+                  <span className="whitespace-pre">{line || ' '}</span>
+                </div>
               );
             })}
-          </div>
-
-          {/* Code Viewer */}
-          <div className="lg:col-span-8 rounded-xl border border-slate-800 bg-slate-950 overflow-hidden">
-            <div className="flex items-center justify-between border-b border-slate-800 px-4 py-2.5 text-xs font-mono">
-              <span className="text-slate-200 font-medium">main.cpp</span>
-              <span className="text-sky-300 tabular-nums">
-                Highlighting lines {activeSection.lineRange[0]}–{activeSection.lineRange[1]} ({activeSection.title})
-              </span>
-            </div>
-            <div
-              ref={codeContainerRef}
-              data-testid="cpp-code-viewer"
-              className="max-h-[600px] overflow-auto py-3 font-mono text-xs leading-6"
-            >
-              {lines.map((line, index) => {
-                const lineNum = index + 1;
-                const isHighlighted =
-                  lineNum >= activeSection.lineRange[0] &&
-                  lineNum <= activeSection.lineRange[1];
-                return (
-                  <div
-                    key={lineNum}
-                    data-line={lineNum}
-                    className={`flex px-4 ${
-                      isHighlighted ? 'bg-blue-900/35 text-slate-50' : 'text-slate-300'
-                    }`}
-                  >
-                    <span className="w-10 shrink-0 select-none pr-4 text-right text-slate-500 tabular-nums">
-                      {lineNum}
-                    </span>
-                    <span className="whitespace-pre">{line || ' '}</span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>

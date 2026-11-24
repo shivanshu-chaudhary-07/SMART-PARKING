@@ -6,6 +6,7 @@ import {
   formatDisplayParked,
   formatDisplayWaiting,
   formatStatus,
+  getOccupancyRate,
   vehicleEntry,
   vehicleExit,
 } from './parkingLot';
@@ -114,4 +115,46 @@ test('Empty or malformed plate is rejected with invalid transition', () => {
   lot = vehicleEntry(lot, '   ');
   assert.equal(lot.lastTransition.type, 'invalid');
   assert.deepEqual(lot.parked, []);
+});
+
+test('Occupancy rate over time and total vehicles served track accurately across entries, queues, and exits', () => {
+  let lot = createParkingLot(2);
+  assert.equal(getOccupancyRate(lot), 0);
+  assert.equal(lot.totalVehiclesServed, 0);
+  assert.equal(lot.history.length, 1);
+
+  // Park 1st car -> 50%, served = 1
+  lot = vehicleEntry(lot, 'V1');
+  assert.equal(getOccupancyRate(lot), 50);
+  assert.equal(lot.totalVehiclesServed, 1);
+
+  // Park 2nd car -> 100%, served = 2
+  lot = vehicleEntry(lot, 'V2');
+  assert.equal(getOccupancyRate(lot), 100);
+  assert.equal(lot.totalVehiclesServed, 2);
+
+  // Queue 3rd car -> still 100%, served stays 2 (not parked yet)
+  lot = vehicleEntry(lot, 'V3');
+  assert.equal(getOccupancyRate(lot), 100);
+  assert.equal(lot.totalVehiclesServed, 2);
+
+  // Exit top -> V2 exits, V3 auto-parked -> 100%, served = 3, exited = 1
+  lot = vehicleExit(lot);
+  assert.equal(getOccupancyRate(lot), 100);
+  assert.equal(lot.totalVehiclesServed, 3);
+  assert.equal(lot.totalVehiclesExited, 1);
+
+  // Exit top with empty queue -> 50%, served stays 3, exited = 2
+  lot = vehicleExit(lot);
+  assert.equal(getOccupancyRate(lot), 50);
+  assert.equal(lot.totalVehiclesServed, 3);
+  assert.equal(lot.totalVehiclesExited, 2);
+  assert.deepEqual(
+    lot.history.map((p) => p.occupancyRate),
+    [0, 50, 100, 100, 100, 50]
+  );
+  assert.deepEqual(
+    lot.history.map((p) => p.totalServed),
+    [0, 1, 2, 2, 3, 3]
+  );
 });

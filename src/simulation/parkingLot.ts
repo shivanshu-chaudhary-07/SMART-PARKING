@@ -26,6 +26,15 @@ export interface LastTransition {
   message: string;
 }
 
+export interface OccupancyPoint {
+  step: number;
+  label: string;
+  occupancyRate: number;
+  parked: number;
+  waiting: number;
+  totalServed: number;
+}
+
 export interface ParkingLotState {
   capacity: number;
   /** Index 0 is bottom (Slot 1), last element is TOP (Slot N). */
@@ -35,6 +44,12 @@ export interface ParkingLotState {
   consoleLog: ConsoleEntry[];
   nextLogId: number;
   lastTransition: LastTransition;
+  /** Cumulative count of vehicles assigned a parking slot (direct entry or auto-allocated). */
+  totalVehiclesServed: number;
+  /** Cumulative count of vehicles that exited the lot. */
+  totalVehiclesExited: number;
+  /** Time-series history of occupancy rate and total vehicles served across state transitions. */
+  history: OccupancyPoint[];
 }
 
 export const MIN_CAPACITY = 1;
@@ -47,6 +62,15 @@ export function normalizePlate(raw: string): string {
 export function isValidPlate(raw: string): boolean {
   const cleaned = normalizePlate(raw);
   return cleaned.length >= 2 && cleaned.length <= 16 && /^[A-Z0-9-]+$/.test(cleaned);
+}
+
+export function calculateOccupancyRate(parkedCount: number, capacity: number): number {
+  if (capacity <= 0) return 0;
+  return Math.round((parkedCount / capacity) * 100);
+}
+
+export function getOccupancyRate(state: ParkingLotState): number {
+  return calculateOccupancyRate(state.parked.length, state.capacity);
 }
 
 export function createParkingLot(capacity: number): ParkingLotState {
@@ -70,7 +94,40 @@ export function createParkingLot(capacity: number): ParkingLotState {
       type: 'idle',
       message: `Lot ready with capacity ${safeCap}. Enter a vehicle plate to begin.`,
     },
+    totalVehiclesServed: 0,
+    totalVehiclesExited: 0,
+    history: [
+      {
+        step: 0,
+        label: 'Start',
+        occupancyRate: 0,
+        parked: 0,
+        waiting: 0,
+        totalServed: 0,
+      },
+    ],
   };
+}
+
+function appendHistoryPoint(
+  history: OccupancyPoint[],
+  parkedCount: number,
+  waitingCount: number,
+  capacity: number,
+  totalServed: number
+): OccupancyPoint[] {
+  const nextStep = history.length;
+  return [
+    ...history,
+    {
+      step: nextStep,
+      label: `T${nextStep}`,
+      occupancyRate: calculateOccupancyRate(parkedCount, capacity),
+      parked: parkedCount,
+      waiting: waitingCount,
+      totalServed,
+    },
+  ];
 }
 
 export function isParked(state: ParkingLotState, plate: string): boolean {
@@ -138,10 +195,19 @@ export function vehicleEntry(state: ParkingLotState, rawPlate: string): ParkingL
   if (!isFull(state)) {
     const nextParked = [...state.parked, plate];
     const slot = nextParked.length;
+    const nextServed = state.totalVehiclesServed + 1;
     const message = `Vehicle ${plate} parked at slot ${slot}.`;
     return {
       ...state,
       parked: nextParked,
+      totalVehiclesServed: nextServed,
+      history: appendHistoryPoint(
+        state.history,
+        nextParked.length,
+        state.waiting.length,
+        state.capacity,
+        nextServed
+      ),
       consoleLog: [
         ...state.consoleLog,
         {
@@ -167,6 +233,13 @@ export function vehicleEntry(state: ParkingLotState, rawPlate: string): ParkingL
   return {
     ...state,
     waiting: nextWaiting,
+    history: appendHistoryPoint(
+      state.history,
+      state.parked.length,
+      nextWaiting.length,
+      state.capacity,
+      state.totalVehiclesServed
+    ),
     consoleLog: [
       ...state.consoleLog,
       {
@@ -210,11 +283,13 @@ export function vehicleExit(state: ParkingLotState): ParkingLotState {
 
   const leaving = state.parked[state.parked.length - 1];
   const remainingParked = state.parked.slice(0, -1);
+  const nextExited = state.totalVehiclesExited + 1;
   const lines = [`Vehicle ${leaving} has left the parking lot.`];
 
   if (state.waiting.length > 0) {
     const [nextVehicle, ...remainingWaiting] = state.waiting;
     const nextParked = [...remainingParked, nextVehicle];
+    const nextServed = state.totalVehiclesServed + 1;
     const autoMsg = `Slot free. Waiting vehicle ${nextVehicle} is now parked automatically.`;
     lines.push(autoMsg);
 
@@ -222,6 +297,15 @@ export function vehicleExit(state: ParkingLotState): ParkingLotState {
       ...state,
       parked: nextParked,
       waiting: remainingWaiting,
+      totalVehiclesServed: nextServed,
+      totalVehiclesExited: nextExited,
+      history: appendHistoryPoint(
+        state.history,
+        nextParked.length,
+        remainingWaiting.length,
+        state.capacity,
+        nextServed
+      ),
       consoleLog: [
         ...state.consoleLog,
         {
@@ -245,6 +329,14 @@ export function vehicleExit(state: ParkingLotState): ParkingLotState {
   return {
     ...state,
     parked: remainingParked,
+    totalVehiclesExited: nextExited,
+    history: appendHistoryPoint(
+      state.history,
+      remainingParked.length,
+      state.waiting.length,
+      state.capacity,
+      state.totalVehiclesServed
+    ),
     consoleLog: [
       ...state.consoleLog,
       {
