@@ -209,7 +209,7 @@ export function ParkingSimulator({
             Interactive Stack &amp; Queue Simulator
           </h2>
           <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-            Mirrors the exact C++ <code className="font-mono text-slate-900">ParkingLot</code> logic: vehicles park in a LIFO stack, overflow into a FIFO waiting queue, and auto-park when a slot opens.
+            Mirrors the exact C <code className="font-mono text-slate-900">struct ParkingLot</code> logic: vehicles park in a LIFO stack, overflow into a FIFO waiting queue, and auto-park when a slot opens.
           </p>
         </div>
 
@@ -270,7 +270,7 @@ export function ParkingSimulator({
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between text-xs mb-2">
                     <span className="font-semibold text-slate-900">Parked · Stack (LIFO)</span>
-                    <span className="font-mono text-blue-700">std::stack</span>
+                    <span className="font-mono text-blue-700">struct Stack</span>
                   </div>
                   <div className="mb-1.5 flex items-center justify-between px-1 text-[11px] font-mono text-slate-500">
                     <span className="inline-flex items-center gap-1 text-blue-700 font-medium">
@@ -332,7 +332,7 @@ export function ParkingSimulator({
                 <div className="flex flex-col">
                   <div className="flex items-center justify-between text-xs mb-2">
                     <span className="font-semibold text-slate-900">Waiting · Queue (FIFO)</span>
-                    <span className="font-mono text-amber-700">std::queue</span>
+                    <span className="font-mono text-amber-700">struct Queue</span>
                   </div>
                   <div className="mb-1.5 flex items-center justify-between px-1 text-[11px] font-mono text-slate-500">
                     <span className="text-emerald-700 font-medium">← DEQUEUE</span>
@@ -387,7 +387,7 @@ export function ParkingSimulator({
               </div>
             </div>
 
-            {/* Compact C++ Console Output */}
+            {/* Compact C Console Output */}
             <div className="rounded-xl border border-slate-800 bg-slate-950 text-slate-100 overflow-hidden">
               <div className="flex items-center justify-between border-b border-slate-800 px-4 py-2 text-xs font-mono">
                 <span className="text-slate-300">Console Output (./parking)</span>
