@@ -5,7 +5,6 @@ import { REPORT_PDF_URL } from '../data/reportData';
 const NAV_LINKS = [
   { href: '#simulator', label: 'Simulator' },
   { href: '#design', label: 'Design' },
-  { href: '#source-code', label: 'Source Code' },
   { href: '#report', label: 'Report' },
 ];
 

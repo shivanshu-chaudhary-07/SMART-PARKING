@@ -3,7 +3,6 @@ import { TopNav } from './components/TopNav';
 import { HeroSection } from './components/HeroSection';
 import { ParkingSimulator } from './components/ParkingSimulator';
 import { DesignSection } from './components/DesignSection';
-import { SourceCodeSection } from './components/SourceCodeSection';
 import { VerificationAndReportSection } from './components/VerificationAndReportSection';
 import {
   createParkingLot,
@@ -97,11 +96,10 @@ export default function App() {
           onSelectPreset={handleSelectPreset}
         />
         <DesignSection />
-        <SourceCodeSection />
         <VerificationAndReportSection onRunTestCase={handleRunTestCase} />
       </main>
 
-      <footer className="border-t border-slate-200 bg-slate-50">
+      <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-7 sm:px-6 lg:px-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500">
           <div>
             <p className="font-medium text-slate-800">
@@ -115,8 +113,8 @@ export default function App() {
             <a href="#simulator" className="hover:text-slate-900 transition-colors">
               Simulator
             </a>
-            <a href="#source-code" className="hover:text-slate-900 transition-colors">
-              Source Code
+            <a href="#design" className="hover:text-slate-900 transition-colors">
+              Design
             </a>
             <a
               href={REPORT_PDF_URL}

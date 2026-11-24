@@ -18,10 +18,10 @@ export function VerificationAndReportSection({
   onRunTestCase,
 }: VerificationAndReportSectionProps) {
   return (
-    <section id="report" className="scroll-mt-16 border-t border-slate-200 bg-white py-14 lg:py-16">
+    <section id="report" className="scroll-mt-16 border-t border-slate-200 bg-slate-50 py-14 lg:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="max-w-2xl">
-          <p className="text-xs font-medium text-blue-700">04. Testing, Complexity &amp; Report</p>
+          <p className="text-xs font-medium text-blue-700">03. Testing, Complexity &amp; Report</p>
           <h2 className="mt-1 font-display text-3xl font-bold tracking-tight text-slate-900 text-balance">
             Test Results, Complexity &amp; Documentation
           </h2>
@@ -122,7 +122,7 @@ export function VerificationAndReportSection({
 
         {/* Limitations & Future Scope */}
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <div className="rounded-xl border border-slate-200 bg-white p-6">
             <h3 className="font-display text-lg font-semibold text-slate-900">
               Limitations (Section 7.1)
             </h3>
@@ -138,7 +138,7 @@ export function VerificationAndReportSection({
             </ul>
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <div className="rounded-xl border border-slate-200 bg-white p-6">
             <h3 className="font-display text-lg font-semibold text-slate-900">
               Future Scope (Section 7.2)
             </h3>
@@ -189,7 +189,7 @@ export function VerificationAndReportSection({
             </ol>
           </div>
 
-          <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
+          <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-white p-6 flex flex-col justify-between">
             <div>
               <p className="text-xs font-medium text-slate-500">
                 Complete Project Report · 16 Pages · PDF
